@@ -9,40 +9,122 @@ import requests
 help_str = '''
 ScreenManager:
     BaseScreen:
+    BeginTestScreen:
+    TestHistoryScreen:
+    TestScreen:
+    AdminMainScreen:
     WelcomeScreen:
     MainScreen:
     LoginScreen:
     OnlyLoginScreen:
     SignupScreen:
+    
+
 <BaseScreen>:
     name:'basescreen'
     MDLabel:
+        halign :'center'
         text:'Welcome to Test'
-        font_size : 24
-        color : 'FF00CF'
-        size_hint : (0.3,0.3)
+        font_size : 36
+        color : '0F0FCF'
+        size_hint : (0.5,0.5)
         pos_hint : {'center_x':0.5, 'center_y':0.8}
     MDRaisedButton:
         text:'User'
-        pos_hint : {'center_x':0.5,'center_y':0.3}
-        size_hint : (0.4,0.2)
+        elevation:10
+        pos_hint : {'center_x':0.5,'center_y':0.5}
+        size_hint : (0.5,0.1)
         bold : True
         on_press: 
             root.manager.current = 'loginscreen'
             root.manager.transition.direction = 'left'
     MDRaisedButton:
         text:'Admin'
-        pos_hint : {'center_x':0.5,'center_y':0.55}
-        size_hint : (0.4,0.2)
+        elevation:10
+        pos_hint : {'center_x':0.5,'center_y':0.3}
+        size_hint : (0.5,0.1)
         bold : True
         on_press:
             root.manager.current = 'onlyloginscreen'
             root.manager.transition.direction = 'left'
+            
+<BeginTestScreen>:
+    name: 'begintestscreen'
+    MDLabel:
+        text:'Quiz Name -'
+        pos_hint : {'center_x':0.5,'center_y':0.9}
+        size_hint: (0.5,0.1)
+    MDLabel:
+        text:'Max Marks -'
+        pos_hint : {'center_x':0.5,'center_y':0.75}
+        size_hint: (0.5,0.1)
+    MDLabel:
+        text:'Time Limit -'
+        pos_hint : {'center_x':0.5,'center_y':0.6}
+        size_hint: (0.5,0.1)
+        
+    MDRaisedButton:
+        text:'START TEST'
+        size_hint: (0.33,0.17)
+        pos_hint: {'center_x':0.5,'center_y':0.2}
+        #on_press:
+        
+    MDTextButton:
+        text: 'Go Back'
+        pos_hint: {'center_x':0.85,'center_y':0.2}
+        on_press:
+            root.manager.current = 'mainscreen'
+            root.manager.transition.direction = 'right'
+            
+<TestHistoryScreen>:
+    name :'testhistoryscreen' 
+    MDTextButton:
+        text: 'Go Back'
+        pos_hint: {'center_x':0.85,'center_y':0.2}
+        on_press:
+            root.manager.current = 'mainscreen'
+            root.manager.transition.direction = 'down'      
+<TestScreen>:
+    name: 'testscreen'
+    MDLabel:
+        text:'question'
+        font_style:'H5'
+        pos_hint: {'center_x':0.4,'center_y':0.7}
+    MDTextButton:
+        text: 'Test'
+        pos_hint: {'center_x':0.5,'center_y':0.6}
+        on_press:
+            app.Opt()
+    MDTextButton:
+        text: 'Test'
+        pos_hint: {'center_x':0.5,'center_y':0.7}
+        on_press:
+            app.Opt()
+    MDTextButton:
+        text: 'Test'
+        pos_hint: {'center_x':0.5,'center_y':0.8}
+        on_press:
+            app.Opt()
+    MDTextButton:
+        text: 'Test'
+        pos_hint: {'center_x':0.5,'center_y':0.9}
+        on_press:
+            app.Opt()
+  
+<AdminMainScreen>:
+    name:'adminmainscreen'
+    MDRaisedButton:
+        text:'Login'
+        size_hint: (0.13,0.07)
+        pos_hint: {'center_x':0.5,'center_y':0.2}
+    
+              
 <WelcomeScreen>:
     name:'welcomescreen'
     MDLabel:
         text:'Login'
         font_style:'H2'
+        bold : True
         halign:'center'
         pos_hint: {'center_y':0.9}
     MDLabel:
@@ -226,11 +308,83 @@ ScreenManager:
     MDLabel:
         id:username_info
         text:'Hello Main'
-        font_style:'H1'
-        halign:'center'
+        font_style:'H4'
+        pos_hint: {'center_x':0.54,'center_y':0.95}
+        
+    MDLabel:
+        text:'Available Tests -'
+        font_style:'H5'
+        pos_hint: {'center_x':0.74,'center_y':0.8}
+        
+    MDRaisedButton:
+        text:'Test1'
+        size_hint: (0.4,0.07)
+        pos_hint: {'center_x':0.5,'center_y':0.7}
+        on_press:
+            root.manager.current = 'begintestscreen'
+            root.manager.transition.direction = 'left'
+            # app.admin_login()
+            # app.username_changer()  
+            
+    MDRaisedButton:
+        text:'Test2'
+        size_hint: (0.4,0.07)
+        pos_hint: {'center_x':0.5,'center_y':0.6}
+        # on_press:
+        #     app.admin_login()
+        #     app.username_changer() 
+            
+    MDRaisedButton:
+        text:'Test3'
+        size_hint: (0.4,0.07)
+        pos_hint: {'center_x':0.5,'center_y':0.5}
+        # on_press:
+        #     app.admin_login()
+        #     app.username_changer() 
+            
+    MDRaisedButton:
+        text:'Test4'
+        size_hint: (0.4,0.07)
+        pos_hint: {'center_x':0.5,'center_y':0.4}
+        # on_press:
+        #     app.admin_login()
+        #     app.username_changer() 
+    
+    MDRaisedButton:
+        text:'Test5'
+        size_hint: (0.4,0.07)
+        pos_hint: {'center_x':0.5,'center_y':0.3}
+        # on_press:
+        #     app.admin_login()
+        #     app.username_changer()    
+        
+    MDRaisedButton:
+        text:'View Test History'
+        size_hint: (0.5,0.1)
+        pos_hint: {'center_x':0.5,'center_y':0.15}
+        background_color: (1,0.2,0.1,1)
+        on_press:
+            root.manager.current = 'testhistoryscreen'
+            root.manager.transition.direction = 'up'
+        #     app.admin_login()
+        #     app.username_changer() 
+  
+
+
+
+
 '''
 
+
 class BaseScreen(Screen):
+    pass
+class BeginTestScreen(Screen):
+    pass
+class TestHistoryScreen(Screen):
+    pass
+class TestScreen(Screen):
+    pass
+class AdminMainScreen(Screen):
     pass
 class WelcomeScreen(Screen):
     pass
@@ -242,8 +396,21 @@ class OnlyLoginScreen(Screen):
     pass
 class SignupScreen(Screen):
     pass
+class MDLabel():
+    pass
+class MDRaisedButton():
+    pass
+class MDTextButton():
+    pass
+class MDTextField():
+    pass
+
 sm = ScreenManager()
 sm.add_widget(BaseScreen(name = 'basescreen'))
+sm.add_widget(TestScreen(name = 'testscreen'))
+sm.add_widget(TestHistoryScreen(name = 'testhistoryscreen'))
+sm.add_widget(BeginTestScreen(name = 'begintestscreen'))
+sm.add_widget(AdminMainScreen(name='adminmainscreen'))
 sm.add_widget(WelcomeScreen(name = 'welcomescreen'))
 sm.add_widget(MainScreen(name = 'mainscreen'))
 sm.add_widget(LoginScreen(name = 'loginscreen'))
@@ -295,7 +462,7 @@ class LoginApp(MDApp):
             #self.username = data[supported_loginEmail]['Username']
             self.username = 'admin'
             self.login_check=True
-            self.strng.get_screen('mainscreen').manager.current = 'mainscreen'
+            self.strng.get_screen('adminmainscreen').manager.current = 'adminmainscreen'
         else:
             print("user no longer exists")
 
@@ -319,6 +486,10 @@ class LoginApp(MDApp):
             print("user no longer exists")
     def close_username_dialog(self,obj):
         self.dialog.dismiss()
+        
+    def Opt(self):
+        self.strng.get_screen('testscreen')
+        
     def username_changer(self):
         if self.login_check:
             self.strng.get_screen('mainscreen').ids.username_info.text = f"welcome {self.username}"
