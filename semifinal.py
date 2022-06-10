@@ -14,6 +14,7 @@ import requests
 from kivy.factory import Factory
 
 
+
 help_str = '''
 #:import Factory kivy.factory.Factory
 ScreenManager:
@@ -68,7 +69,7 @@ ScreenManager:
     BoxLayout:
         orientation: 'vertical'
         Label:
-            text: str( app.ini()) + str(app.show_q1().iloc[0]) + ". " + str(app.show_q1().iloc[1])
+            text: str(app.show_q1().iloc[0]) + ". " + str(app.show_q1().iloc[1])
             text_size: self.width, None
             size_hint: 1, None
             height: self.texture_size[1]
@@ -85,8 +86,8 @@ ScreenManager:
             font_size:self.width/15
             color: (1,1,0)
             on_release:
-                
                 app.count += 1
+                
         Button:
             text: 'b. '+ str(app.show_q1().iloc[3])
             text_size: self.width, None
@@ -113,8 +114,8 @@ ScreenManager:
             #arrow-right-bold-circle": "\uF056"
             pos_hint: {'center_x': .5, 'center_y': .15}
             elevation_normal: 8
-            md_bg_color: utils.get_color_from_hex("#0E2433")
-            text_color: utils.get_color_from_hex("#FFFFFF")
+            md_bg_color: ("#0E2433")
+            text_color: ("#FFFFFF")
             on_press:
                 root.manager.current = "q2"
 
@@ -124,7 +125,7 @@ ScreenManager:
     BoxLayout:
         orientation: 'vertical'
         Label:
-            text: str(app.ini())+ str(app.show_q2().iloc[0]) + ". " + str(app.show_q2().iloc[1])
+            text: str(app.show_q2().iloc[0]) + ". " + str(app.show_q2().iloc[1])
             text_size: self.width, None
             size_hint: 1, None
             height: self.texture_size[1]
@@ -184,7 +185,7 @@ ScreenManager:
         orientation: 'vertical'
 
         Label:
-            text: str(app.ini())+str(app.show_q3().iloc[0]) + ". " + str(app.show_q3().iloc[1])
+            text: str(app.show_q3().iloc[0]) + ". " + str(app.show_q3().iloc[1])
             text_size: self.width, None
             size_hint: 1, None
             height: self.texture_size[1]
@@ -232,10 +233,12 @@ ScreenManager:
                     background_normal:'backbtn.png'
                     background_down:'backbtn.png'
                 Button:
-                    on_release:app.root.current = 'final'
-                    app.add_score(app.score())
-                    background_normal:'nextbtn.png'
-                    background_down:'nextbtn.png'
+                    on_release:
+                        background_normal:'nextbtn.png'
+                        background_down:'nextbtn.png'
+                        #app.add_score(str(app.score()))
+                        app.root.current = 'final'
+                        
 
 <FinalPage>:
     name:'final'
@@ -507,7 +510,7 @@ ScreenManager:
         mode: "rectangle"
   
     MDRaisedButton:
-        text:'Login'
+        text:'Proceed'
         size_hint: (0.13,0.07)
         pos_hint: {'center_x':0.5,'center_y':0.2}
         on_press:
@@ -808,7 +811,6 @@ class LoginApp(MDApp):
         to_database = json.loads(signup_info)
         print((to_database))
         requests.patch(url = self.url,json = to_database)
-        self.strng.get_screen('loginscreen').manager.current = 'loginscreen' 
         
            
     def acs_code(self):
@@ -910,7 +912,7 @@ class LoginApp(MDApp):
         self.a = 1
     
     def score(self):
-        m = (self.count)*2
+        m = (self.count)*5
         return m 
     
     def timer(self):
