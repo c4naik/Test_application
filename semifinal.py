@@ -29,6 +29,7 @@ ScreenManager:
     TestScreen:
     AdminMainScreen:
     WelcomeScreen:
+    MainScreentwo
     MainScreen:
     LoginScreen:
     OnlyLoginScreen:
@@ -87,6 +88,7 @@ ScreenManager:
             color: (1,1,0)
             on_release:
                 app.count += 1
+                print(app.count)
                 
         Button:
             text: 'b. '+ str(app.show_q1().iloc[3])
@@ -109,15 +111,14 @@ ScreenManager:
             color: (1,1,0)
             on_release:
                
-        MDFloatingActionButton:
-            icon: 'arrow-right-bold'
-            #arrow-right-bold-circle": "\uF056"
-            pos_hint: {'center_x': .5, 'center_y': .15}
-            elevation_normal: 8
-            md_bg_color: ("#0E2433")
-            text_color: ("#FFFFFF")
-            on_press:
-                root.manager.current = "q2"
+       
+        AnchorLayout:
+            anchor_y:'bottom'
+            BoxLayout:
+                Button:
+                    on_release:app.root.current = 'q2'
+                    background_normal:'nextbtn.png'
+                    background_down:'nextbtn.png'
 
 <Q2>:
     name:'q2'
@@ -143,6 +144,7 @@ ScreenManager:
             color: (1,1,0)
             on_release:
                 app.count+=1
+                print(app.count)
         Button:
             text: 'b. '+ str(app.show_q2().iloc[3])
             text_size: self.width, None
@@ -169,10 +171,6 @@ ScreenManager:
         AnchorLayout:
             anchor_y:'bottom'
             BoxLayout:
-                Button:
-                    on_release:app.root.current = 'q1'
-                    background_normal:'backbtn.png'
-                    background_down:'backbtn.png'
                 Button:
                     on_release:app.root.current = 'q3'
                     background_normal:'nextbtn.png'
@@ -203,6 +201,7 @@ ScreenManager:
             color: (1,1,0)
             on_release:
                 app.count += 1
+                print(app.count)
         Button:
             text: 'b. '+ str(app.show_q3().iloc[3])
             text_size: self.width, None
@@ -228,23 +227,21 @@ ScreenManager:
         AnchorLayout:
             anchor_y:'bottom'
             BoxLayout:
+
                 Button:
-                    on_release:app.root.current = 'q2'
-                    background_normal:'backbtn.png'
-                    background_down:'backbtn.png'
-                Button:
+                    background_normal:'submitbtn.jpg'
+                    background_down:'submitbtn.jpg'
                     on_release:
-                        background_normal:'nextbtn.png'
-                        background_down:'nextbtn.png'
-                        #app.add_score(str(app.score()))
+                        app.add_score(str(app.score()))
                         app.root.current = 'final'
+                        
                         
 
 <FinalPage>:
     name:'final'
     
     MDLabel:
-        text: "Score : " + str(app.score())
+        text: "Score : " + str(app.showscore())
         pos_hint : {'center_x':0.5,'center_y':0.7}
         size_hint: (0.5,0.2)
         
@@ -253,7 +250,7 @@ ScreenManager:
         pos_hint: {'center_x':0.5,'center_y':0.3}
         size_hint:(0.5,0.2)
         on_press:
-            root.manager.current = 'mainscreen'
+            root.manager.current = 'mainscreentwo'
             root.manager.transition.direction = 'right'
         
  
@@ -298,10 +295,15 @@ ScreenManager:
 <TestHistoryScreen>:
     name :'testhistoryscreen' 
     MDTextButton:
+        text: "Your Test 1 Score :     " + str(app.showscore())    
+        pos_hint : {'center_x':0.5,'center_y':0.5}
+        size_hint: (0.5,0.2)
+        
+    MDTextButton:
         text: 'Go Back'
         pos_hint: {'center_x':0.85,'center_y':0.2}
         on_press:
-            root.manager.current = 'mainscreen'
+            root.manager.current = 'mainscreentwo'
             root.manager.transition.direction = 'down'      
 <TestScreen>:
     name: 'testscreen'
@@ -574,6 +576,67 @@ ScreenManager:
         on_press:
             root.manager.current = 'loginscreen'
             root.manager.transition.direction = 'down'
+            
+<MainScreentwo>:
+    name: 'mainscreentwo'
+    MDLabel:
+        text:'Welcome'
+        font_style:'H4'
+        pos_hint: {'center_x':0.54,'center_y':0.95}
+        
+    MDLabel:
+        text:'Available Tests -'
+        font_style:'H5'
+        pos_hint: {'center_x':0.74,'center_y':0.8}
+        
+    MDRaisedButton:
+        text:'Test1'
+        size_hint: (0.4,0.07)
+        pos_hint: {'center_x':0.5,'center_y':0.7}
+            
+    MDRaisedButton:
+        text:'Test2'
+        size_hint: (0.4,0.07)
+        pos_hint: {'center_x':0.5,'center_y':0.6}
+        on_press:
+            #app.show_marks()
+        #     app.username_changer() 
+            
+    MDRaisedButton:
+        text:'Test3'
+        size_hint: (0.4,0.07)
+        pos_hint: {'center_x':0.5,'center_y':0.5}
+        # on_press:
+        #     app.admin_login()
+        #     app.username_changer() 
+            
+    MDRaisedButton:
+        text:'Test4'
+        size_hint: (0.4,0.07)
+        pos_hint: {'center_x':0.5,'center_y':0.4}
+        # on_press:
+        #     app.admin_login()
+        #     app.username_changer() 
+    
+    MDRaisedButton:
+        text:'Test5'
+        size_hint: (0.4,0.07)
+        pos_hint: {'center_x':0.5,'center_y':0.3}
+        # on_press:
+        #     app.admin_login()
+        #     app.username_changer()  
+        
+    MDRaisedButton:
+        text:'View Test History'
+        size_hint: (0.5,0.1)
+        pos_hint: {'center_x':0.5,'center_y':0.15}
+        background_color: (1,0.2,0.1,1)
+        on_press:
+            root.manager.current = 'testhistoryscreen'
+            root.manager.transition.direction = 'up'
+        #     app.admin_login()
+        #     app.username_changer()  
+    
   
     
     
@@ -655,6 +718,8 @@ class AdminMainScreen(Screen):
     pass
 class WelcomeScreen(Screen):
     pass
+class MainScreentwo(Screen):
+    pass
 class MainScreen(Screen):
     pass
 class LoginScreen(Screen):
@@ -673,8 +738,6 @@ class MDTextButton():
     pass
 class MDTextField():
     pass
-
-
 
 class HomePage(Screen):
     pass
@@ -741,6 +804,7 @@ sm.add_widget(TestHistoryScreen(name = 'testhistoryscreen'))
 sm.add_widget(BeginTestScreen(name = 'begintestscreen'))
 sm.add_widget(AdminMainScreen(name='adminmainscreen'))
 sm.add_widget(WelcomeScreen(name = 'welcomescreen'))
+sm.add_widget(MainScreentwo(name='mainscreentwo'))
 sm.add_widget(MainScreen(name = 'mainscreen'))
 sm.add_widget(LoginScreen(name = 'loginscreen'))
 sm.add_widget(OnlyLoginScreen(name='onlyloginscreen'))
@@ -761,27 +825,7 @@ class LoginApp(MDApp):
      
         return self.strng
 
-    def signup(self):
-        signupEmail = self.strng.get_screen('signupscreen').ids.signup_email.text
-        signupPassword = self.strng.get_screen('signupscreen').ids.signup_password.text
-        signupUsername = self.strng.get_screen('signupscreen').ids.signup_username.text
-        if signupEmail.split() == [] or signupPassword.split() == [] or signupUsername.split() == []:
-            cancel_btn_username_dialogue = MDFlatButton(text = 'Retry',on_release = self.close_username_dialog)
-            self.dialog = MDDialog(title = 'Invalid Input',text = 'Please Enter a valid Input',size_hint = (0.7,0.2),buttons = [cancel_btn_username_dialogue])
-            self.dialog.open()
-        if len(signupUsername.split())>1:
-            cancel_btn_username_dialogue = MDFlatButton(text = 'Retry',on_release = self.close_username_dialog)
-            self.dialog = MDDialog(title = 'Invalid Username',text = 'Please enter username without space',size_hint = (0.7,0.2),buttons = [cancel_btn_username_dialogue])
-            self.dialog.open()
-        else:
-            print(signupEmail,signupPassword)
-            signup_info = str({f'\"{signupEmail}\":{{"Password":\"{signupPassword}\","Username":\"{signupUsername}\"}}'})
-            signup_info = signup_info.replace(".","-")
-            signup_info = signup_info.replace("\'","")
-            to_database = json.loads(signup_info)
-            print((to_database))
-            requests.patch(url = self.url,json = to_database)
-            self.strng.get_screen('loginscreen').manager.current = 'loginscreen'
+    
     auth = 'OovbOiKqlkIaA0Nu0rIjhlJIxQVEyPGlgLJAV7kG'
     auth2 = 'MmkkVvk0BFO1HMkdpagvcNr181mlWRP8mcr0hFVF'
     
@@ -804,13 +848,35 @@ class LoginApp(MDApp):
             self.strng.get_screen('adminmainscreen').manager.current = 'adminmainscreen'
         else:
             print("user no longer exists")
-    def add_score(self,score):  
-        signup_info = str({f'\"{self.username}\":{{"Email":\"{self.mail}\","Test1_Score:\"{score}\"}}'})
-        signup_info = signup_info.replace(".","-")
-        signup_info = signup_info.replace("\'","")
-        to_database = json.loads(signup_info)
+    def signup(self):
+        signupEmail = self.strng.get_screen('signupscreen').ids.signup_email.text
+        signupPassword = self.strng.get_screen('signupscreen').ids.signup_password.text
+        signupUsername = self.strng.get_screen('signupscreen').ids.signup_username.text
+        if signupEmail.split() == [] or signupPassword.split() == [] or signupUsername.split() == []:
+            cancel_btn_username_dialogue = MDFlatButton(text = 'Retry',on_release = self.close_username_dialog)
+            self.dialog = MDDialog(title = 'Invalid Input',text = 'Please Enter a valid Input',size_hint = (0.7,0.2),buttons = [cancel_btn_username_dialogue])
+            self.dialog.open()
+        if len(signupUsername.split())>1:
+            cancel_btn_username_dialogue = MDFlatButton(text = 'Retry',on_release = self.close_username_dialog)
+            self.dialog = MDDialog(title = 'Invalid Username',text = 'Please enter username without space',size_hint = (0.7,0.2),buttons = [cancel_btn_username_dialogue])
+            self.dialog.open()
+        else:
+            print(signupEmail,signupPassword)
+            signup_info = str({f'\"{signupEmail}\":{{"Password":\"{signupPassword}\","Username":\"{signupUsername}\"}}'})
+            signup_info = signup_info.replace(".","-")
+            signup_info = signup_info.replace("\'","")
+            to_database = json.loads(signup_info)
+            print((to_database))
+            requests.patch(url = self.url,json = to_database)
+            self.strng.get_screen('loginscreen').manager.current = 'loginscreen'
+            
+    def add_score(self,score): 
+        score_info = str({f'\"{self.username}\":{{"score":\"{score}\"}}'})
+        score_info = score_info.replace(".","-")
+        score_info = score_info.replace("\'","")
+        to_database = json.loads(score_info)
         print((to_database))
-        requests.patch(url = self.url,json = to_database)
+        requests.patch(url = self.url2,json = to_database)
         
            
     def acs_code(self):
@@ -827,6 +893,13 @@ class LoginApp(MDApp):
             #self.username = data[supported_loginEmail]['Username']
             
             self.strng.get_screen('q1').manager.current = 'q1'
+            
+    def showscore(self):
+        request  = requests.get("https://testrecord-ba907-default-rtdb.asia-southeast1.firebasedatabase.app/.json"+'?auth='+'MmkkVvk0BFO1HMkdpagvcNr181mlWRP8mcr0hFVF')
+        data = request.json()
+        self.scr = data['x1']['score']
+        print(self.scr)
+        return self.scr        
             
     def login(self):
         loginEmail = self.strng.get_screen('loginscreen').ids.login_email.text
@@ -857,10 +930,10 @@ class LoginApp(MDApp):
         request  = requests.get(self.url2 +'?auth='+self.auth2)
         data = request.json()
         return data['Test1']['max_marks']
-        
+         
     def username_changer(self):
         if self.login_check:
-            self.strng.get_screen('mainscreen').ids.username_info.text = f"welcome {self.username}"
+            self.strng.get_screen('mainscreen').ids.username_info.text = f"Welcome {self.username}"
             
       
           
@@ -900,16 +973,7 @@ class LoginApp(MDApp):
         df = pd.read_csv(url)
         return df.iat[0,2]
     
-    def inc(self):
-        #if (self.a ==1):
-            self.count += 1
             
-    def ini(self):
-        self.a = 1
-        
-    def counter_ini(self):
-        self.count = 0
-        self.a = 1
     
     def score(self):
         m = (self.count)*5
@@ -920,5 +984,5 @@ class LoginApp(MDApp):
         clock.start()
         return clock
 
-    count = 2
+    
 LoginApp().run()
