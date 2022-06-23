@@ -23,6 +23,8 @@ ScreenManager:
     Q1:
     Q2:
     Q3:
+    Q4:
+    Q5:
     FinalPage:
     TestMainScreen:
     BeginTestScreen:
@@ -189,13 +191,11 @@ ScreenManager:
                     on_release:app.root.current = 'q3'
                     background_normal:'nextbtn.png'
                     background_down:'nextbtn.png'
-
 <Q3>:
     name:'q3'
     
     BoxLayout:
         orientation: 'vertical'
-
         Label:
             text: str(app.show_q3().iloc[0]) + ". " + str(app.show_q3().iloc[1])
             text_size: self.width, None
@@ -214,7 +214,7 @@ ScreenManager:
             font_size:self.width/15
             color: (1,1,0)
             on_release:
-                app.count += 1
+                app.count+=1
                 print(app.count)
         Button:
             text: 'b. '+ str(app.show_q3().iloc[3])
@@ -222,16 +222,140 @@ ScreenManager:
             font_size:self.width/15
             color: (1,1,0)
             on_release:
-               
+                
         Button:
             text: 'c. '+str(app.show_q3().iloc[4])
             text_size: self.width, None
             font_size:self.width/15
             color: (1,1,0)
             on_release:
-                
+               
         Button:
             text: 'd. '+ str(app.show_q3().iloc[5])
+            text_size: self.width, None
+            font_size:self.width/15
+            color: (1,1,0)
+            on_release:
+      
+
+       
+        AnchorLayout:
+            anchor_y:'bottom'
+            BoxLayout:
+                MDLabel:
+                    text:'End Time -'+str(app.get_start_time())
+             
+                MDLabel:
+                    text:'Current Time-'+str(app.current_time())
+                    
+                Button:
+                    on_release:app.root.current = 'q4'
+                    background_normal:'nextbtn.png'
+                    background_down:'nextbtn.png'
+<Q4>:
+    name:'q4'
+    
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: str(app.show_q4().iloc[0]) + ". " + str(app.show_q4().iloc[1])
+            text_size: self.width, None
+            size_hint: 1, None
+            height: self.texture_size[1]
+            font_size:self.width/15
+            color: 0,0,0
+            canvas.before:
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+         
+        Button:
+            text: 'a. '+ str(app.show_q4().iloc[2])
+            text_size: self.width, None
+            font_size:self.width/15
+            color: (1,1,0)
+            on_release:
+                app.count+=1
+                print(app.count)
+        Button:
+            text: 'b. '+ str(app.show_q4().iloc[3])
+            text_size: self.width, None
+            font_size:self.width/15
+            color: (1,1,0)
+            on_release:
+                
+        Button:
+            text: 'c. '+str(app.show_q4().iloc[4])
+            text_size: self.width, None
+            font_size:self.width/15
+            color: (1,1,0)
+            on_release:
+               
+        Button:
+            text: 'd. '+ str(app.show_q4().iloc[5])
+            text_size: self.width, None
+            font_size:self.width/15
+            color: (1,1,0)
+            on_release:
+      
+
+       
+        AnchorLayout:
+            anchor_y:'bottom'
+            BoxLayout:
+                MDLabel:
+                    text:'End Time -'+str(app.get_start_time())
+             
+                MDLabel:
+                    text:'Current Time-'+str(app.current_time())
+                    
+                Button:
+                    on_release:app.root.current = 'q5'
+                    background_normal:'nextbtn.png'
+                    background_down:'nextbtn.png'
+
+<Q5>:
+    name:'q5'
+    
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            text: str(app.show_q5().iloc[0]) + ". " + str(app.show_q5().iloc[1])
+            text_size: self.width, None
+            size_hint: 1, None
+            height: self.texture_size[1]
+            font_size:self.width/15
+            color: 0,0,0
+            canvas.before:
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+         
+        Button:
+            text: 'a. '+ str(app.show_q5().iloc[2])
+            text_size: self.width, None
+            font_size:self.width/15
+            color: (1,1,0)
+            on_release:
+                app.count += 1
+                print(app.count)
+        Button:
+            text: 'b. '+ str(app.show_q5().iloc[3])
+            text_size: self.width, None
+            font_size:self.width/15
+            color: (1,1,0)
+            on_release:
+               
+        Button:
+            text: 'c. '+str(app.show_q5().iloc[4])
+            text_size: self.width, None
+            font_size:self.width/15
+            color: (1,1,0)
+            on_release:
+                
+        Button:
+            text: 'd. '+ str(app.show_q5().iloc[5])
             text_size: self.width, None
             font_size:self.width/15
             color: (1,1,0)
@@ -602,7 +726,7 @@ ScreenManager:
 <MainScreentwo>:
     name: 'mainscreentwo'
     MDLabel:
-        text:'Welcome'
+        text:'Welcome Back'
         font_style:'H4'
         pos_hint: {'center_x':0.54,'center_y':0.95}
         
@@ -773,6 +897,12 @@ class Q2(Screen):
 class Q3(Screen):
     pass
 
+class Q4(Screen):
+    pass
+
+class Q5(Screen):
+    pass
+
 class FinalPage(Screen):
     pass
 
@@ -798,11 +928,22 @@ sm.add_widget(OnlyLoginScreen(name='onlyloginscreen'))
 sm.add_widget(CodeScreen(name = 'codescreen'))
 sm.add_widget(SignupScreen(name = 'signupscreen'))
 
-
+class Time(MDApp):
+    def writetime(self):
+        file1 =  open('MyFile.txt', 'w')
+        file1.write(self.start_time() )
+        
+    def start_time(self):
+        ini = datetime.now()+ timedelta(minutes=30)
+        strt_time = ini.strftime("%H:%M:%S") 
+        return strt_time
+    
+    
 # file1 =  open('MyFile.txt', 'w')
 # file1.write(start_time())
 class QuizApp(MDApp):
     count = 0
+    
     def chktime(self,currenttime,endtime):
         if endtime < currenttime :
             self.strng.get_screen('final').manager.current = 'final'
@@ -942,6 +1083,18 @@ class QuizApp(MDApp):
         url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMrSUVtqQIZtz8iS_MmfhXdZ1q0Ra9b1yHarEoIiPsqzJrlfVpqhlHb9QQOeyQUqZY_qsZrZLj7R-9/pub?output=csv'
         df = pd.read_csv(url)
         return df.iloc[2]
+    
+    def show_q4(self):
+        import pandas as pd
+        url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMrSUVtqQIZtz8iS_MmfhXdZ1q0Ra9b1yHarEoIiPsqzJrlfVpqhlHb9QQOeyQUqZY_qsZrZLj7R-9/pub?output=csv'
+        df = pd.read_csv(url)
+        return df.iloc[3]
+    
+    def show_q5(self):
+        import pandas as pd
+        url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMrSUVtqQIZtz8iS_MmfhXdZ1q0Ra9b1yHarEoIiPsqzJrlfVpqhlHb9QQOeyQUqZY_qsZrZLj7R-9/pub?output=csv'
+        df = pd.read_csv(url)
+        return df.iloc[4]
 
     def shx(self):
         import pandas as pd
