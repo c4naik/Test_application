@@ -1,8 +1,6 @@
 from re import A
 from kivy.lang import Builder
-from kivymd.app import MDApp,App
-from kivy.animation import Animation
-from kivy.properties import StringProperty, NumericProperty
+from kivymd.app import MDApp
 from kivy.uix.screenmanager import ScreenManager, Screen
 import json
 from kivy.config import Config
@@ -13,7 +11,7 @@ from kivymd.uix.label import Label
 import requests
 from kivy.factory import Factory
 from datetime import datetime,timedelta
-import time
+
 
 
 help_str = '''
@@ -42,6 +40,11 @@ ScreenManager:
 
 <BaseScreen>:
     name:'basescreen'
+    Image:
+        source:'logo.png'
+        allow_stretch:True
+        keep_ratio:True
+        opacity:0.5
     MDLabel:
         halign :'center'
         text:'Welcome to Test'
@@ -90,8 +93,9 @@ ScreenManager:
             font_size:self.width/15
             color: (1,1,0)
             on_release:
-                app.count += 1
-                print(app.count)
+                app.countscr1()
+                #app.count += 1
+                #print(app.count)
                 
         Button:
             text: 'b. '+ str(app.show_q1().iloc[3])
@@ -153,8 +157,8 @@ ScreenManager:
             font_size:self.width/15
             color: (1,1,0)
             on_release:
-                app.count+=1
-                print(app.count)
+                app.countscr2()
+             
         Button:
             text: 'b. '+ str(app.show_q2().iloc[3])
             text_size: self.width, None
@@ -214,8 +218,8 @@ ScreenManager:
             font_size:self.width/15
             color: (1,1,0)
             on_release:
-                app.count+=1
-                print(app.count)
+                app.countscr3()
+                #print(app.count)
         Button:
             text: 'b. '+ str(app.show_q3().iloc[3])
             text_size: self.width, None
@@ -275,8 +279,8 @@ ScreenManager:
             font_size:self.width/15
             color: (1,1,0)
             on_release:
-                app.count+=1
-                print(app.count)
+                app.countscr4()
+                #print(app.count)
         Button:
             text: 'b. '+ str(app.show_q4().iloc[3])
             text_size: self.width, None
@@ -338,8 +342,8 @@ ScreenManager:
             font_size:self.width/15
             color: (1,1,0)
             on_release:
-                app.count += 1
-                print(app.count)
+                app.countscr5()
+                #print(app.count)
         Button:
             text: 'b. '+ str(app.show_q5().iloc[3])
             text_size: self.width, None
@@ -377,6 +381,7 @@ ScreenManager:
                     background_normal:'submitbtn.jpg'
                     background_down:'submitbtn.jpg'
                     on_release:
+                        app.total_count()
                         app.add_score(str(app.score()))
                         app.root.current = 'final'
                         
@@ -439,6 +444,11 @@ ScreenManager:
             
 <TestHistoryScreen>:
     name :'testhistoryscreen' 
+    Image:
+        source:'bg4.jpg'
+        allow_stretch:True
+        keep_ratio:True
+        opacity:0.2
     MDTextButton:
         text: "Your Test 1 Score :     " + str(app.showscore())    
         pos_hint : {'center_x':0.5,'center_y':0.5}
@@ -478,19 +488,50 @@ ScreenManager:
             app.Opt()
   
 <MyPopup@Popup>
-    auto_dismiss:False
-    title:'Access Key is COEP#123 '
+    auto_dismiss:True
+    title:'Access Key'
     size_hint:(0.6,0.2)
     pos_hint:{"x":0.2,"top":0.6}
-    MDTextButton:
-        text:"Close me"
-        color:'white'
-        on_release:root.dismiss()
-        size_hint: (0.13,0.07)
-        pos_hint: {'center_x':0.5,'center_y':0.2}
+    MDLabel:
+        text:'COEP#123'
+        font_style:'H3'
+        color:(1,1,1)
+        pos_hint: {'center_x':0.4,'center_y':0.7}
+        
+<MyPopup_1@Popup>
+    auto_dismiss:True
+    title:'Test Submission Status '
+    size_hint:(0.6,0.2)
+    pos_hint:{"x":0.2,"top":0.6}
+    MDLabel:
+        text:'Link Submitted Successfully'
+        font_style:'H4'
+        color:(1,1,1)
+        pos_hint: {'center_x':0.4,'center_y':0.7}
+
         
 <AdminMainScreen>:
     name:'adminmainscreen'
+    Image:
+        source:'bg5.jpg'
+        allow_stretch:True
+        keep_ratio:True
+        opacity:0.2
+    MDTextField:
+        id:signup_email
+        pos_hint: {'center_y':0.6,'center_x':0.5}
+        size_hint : (0.7,0.1)
+        hint_text: 'Enter Test Link'
+        helper_text:'Required'
+        helper_text_mode:  'on_error'
+        required: True
+        mode: "rectangle"
+    MDRaisedButton:
+        text:'Submit Link'
+        size_hint: (0.13,0.07)
+        pos_hint: {'center_x':0.5,'center_y':0.4}
+        on_press:app.admin_main()
+        on_release: Factory.MyPopup_1().open()
     MDRaisedButton:
         text:'GenerateKey'
         size_hint: (0.13,0.07)
@@ -505,7 +546,7 @@ ScreenManager:
         pos_hint: {'center_x':0.85,'center_y':0.2}
         on_press:
             root.manager.current = 'onlyloginscreen'
-            root.manager.transition.direction = 'right' 
+            root.manager.transition.direction = 'right'
     
               
 <WelcomeScreen>:
@@ -928,21 +969,13 @@ sm.add_widget(OnlyLoginScreen(name='onlyloginscreen'))
 sm.add_widget(CodeScreen(name = 'codescreen'))
 sm.add_widget(SignupScreen(name = 'signupscreen'))
 
-class Time(MDApp):
-    def writetime(self):
-        file1 =  open('MyFile.txt', 'w')
-        file1.write(self.start_time() )
-        
-    def start_time(self):
-        ini = datetime.now()+ timedelta(minutes=30)
-        strt_time = ini.strftime("%H:%M:%S") 
-        return strt_time
     
     
-# file1 =  open('MyFile.txt', 'w')
-# file1.write(start_time())
+    
+
 class QuizApp(MDApp):
     count = 0
+    
     
     def chktime(self,currenttime,endtime):
         if endtime < currenttime :
@@ -959,7 +992,9 @@ class QuizApp(MDApp):
         return strt_time
     
     def build(self):
-        
+        import numpy
+        self.scorec = numpy.zeros(10) 
+        self.uname = "x1"
         
         self.strng = Builder.load_string(help_str)
         
@@ -983,8 +1018,7 @@ class QuizApp(MDApp):
             self.username = 'admin'
             self.login_check=True
             self.strng.get_screen('adminmainscreen').manager.current = 'adminmainscreen'
-        else:
-            print("user no longer exists")
+    
     def signup(self):
         signupEmail = self.strng.get_screen('signupscreen').ids.signup_email.text
         signupPassword = self.strng.get_screen('signupscreen').ids.signup_password.text
@@ -993,26 +1027,33 @@ class QuizApp(MDApp):
             cancel_btn_username_dialogue = MDFlatButton(text = 'Retry',on_release = self.close_username_dialog)
             self.dialog = MDDialog(title = 'Invalid Input',text = 'Please Enter a valid Input',size_hint = (0.7,0.2),buttons = [cancel_btn_username_dialogue])
             self.dialog.open()
+        x = "@"
+        
         if len(signupUsername.split())>1:
             cancel_btn_username_dialogue = MDFlatButton(text = 'Retry',on_release = self.close_username_dialog)
             self.dialog = MDDialog(title = 'Invalid Username',text = 'Please enter username without space',size_hint = (0.7,0.2),buttons = [cancel_btn_username_dialogue])
             self.dialog.open()
-        else:
-            print(signupEmail,signupPassword)
+            
+        if x in signupEmail :
+            #print(signupEmail,signupPassword)
             signup_info = str({f'\"{signupEmail}\":{{"Password":\"{signupPassword}\","Username":\"{signupUsername}\"}}'})
             signup_info = signup_info.replace(".","-")
             signup_info = signup_info.replace("\'","")
             to_database = json.loads(signup_info)
-            print((to_database))
+            #print((to_database))
             requests.patch(url = self.url,json = to_database)
             self.strng.get_screen('loginscreen').manager.current = 'loginscreen'
+        else :
+            cancel_btn_username_dialogue = MDFlatButton(text = 'Retry',on_release = self.close_username_dialog)
+            self.dialog = MDDialog(title = 'Invalid Email',text = 'Please enter correct email address',size_hint = (0.7,0.2),buttons = [cancel_btn_username_dialogue])
+            self.dialog.open()
             
     def add_score(self,score): 
         score_info = str({f'\"{self.username}\":{{"score":\"{score}\"}}'})
         score_info = score_info.replace(".","-")
         score_info = score_info.replace("\'","")
         to_database = json.loads(score_info)
-        print((to_database))
+        #print((to_database))
         requests.patch(url = self.url2,json = to_database)
         
            
@@ -1026,8 +1067,8 @@ class QuizApp(MDApp):
     def showscore(self):
         request  = requests.get("https://testrecord-ba907-default-rtdb.asia-southeast1.firebasedatabase.app/.json"+'?auth='+'MmkkVvk0BFO1HMkdpagvcNr181mlWRP8mcr0hFVF')
         data = request.json()
-        self.scr = data['x1']['score']
-        print(self.scr)
+        self.scr = data['112003093']['score']
+        #print(self.scr)
         return self.scr        
             
     def login(self):
@@ -1044,6 +1085,7 @@ class QuizApp(MDApp):
             emails.add(key)
         if supported_loginEmail in emails and supported_loginPassword == data[supported_loginEmail]['Password']:
             self.username = data[supported_loginEmail]['Username']
+            self.uname = self.username
             self.mail = data[supported_loginEmail]
             self.login_check=True
             self.strng.get_screen('mainscreen').manager.current = 'mainscreen'
@@ -1063,7 +1105,16 @@ class QuizApp(MDApp):
     def username_changer(self):
         if self.login_check:
             self.strng.get_screen('mainscreen').ids.username_info.text = f"Welcome {self.username}"
-            
+    
+    def admin_main(self):
+        Link=self.strng.get_screen('adminmainscreen').ids.signup_email.text
+        file = open("TestLink.txt","w")
+        file.write(Link)
+        
+    def get_link(self):
+        file = open("TestLink.txt","r")
+        data=file.read()
+        return data         
       
           
     def show_q1(self):
@@ -1117,7 +1168,7 @@ class QuizApp(MDApp):
             
     
     def score(self):
-        m = (self.count)*5
+        m = (self.count)*4
         return m 
         
     
@@ -1129,7 +1180,6 @@ class QuizApp(MDApp):
     def get_start_time(self):
         file = open("MyFile.txt","r")
         data=file.read()
-        print(data)
         return data
     
     def current_time(self):
@@ -1137,6 +1187,28 @@ class QuizApp(MDApp):
         current_time = now.strftime("%H:%M:%S")
         return current_time
     
+    def countscr1(self):
+        if self.scorec[self.show_q1().iloc[0]] == 0:
+            self.scorec[self.show_q1().iloc[0]] = 1
+    def countscr2(self):
+        if self.scorec[self.show_q2().iloc[0]] == 0:
+            self.scorec[self.show_q2().iloc[0]] = 1
+    def countscr3(self):
+        if self.scorec[self.show_q3().iloc[0]] == 0:
+            self.scorec[self.show_q3().iloc[0]] = 1
+    def countscr4(self):
+        if self.scorec[self.show_q4().iloc[0]] == 0:
+            self.scorec[self.show_q4().iloc[0]] = 1
+    def countscr5(self):
+        if self.scorec[self.show_q5().iloc[0]] == 0:
+            self.scorec[self.show_q5().iloc[0]] = 1
+    
+    def total_count(self):
+        for i in range(5):
+            if self.scorec[i]==1:
+                self.count += 1
+        #print(self.count)
+        
     def time_diff(self,start):
         t=self.current_time()
         if(t==start):
@@ -1144,4 +1216,5 @@ class QuizApp(MDApp):
         else:
             return 0
 
+    
 QuizApp().run()
